@@ -8,16 +8,21 @@ public class AndroidInput : MonoBehaviour {
 
     public float minTouchDistance;
     public Material pushed;
-    public Material normal; 
+    public Material normal;
 
-	// Use this for initialization
-	void Start () {
+    bool pushedMaterialActive = false;
+    bool mouseStay = false;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        
+
         if (usesAndroid)
         {
             Touch[] t = Input.touches;
@@ -31,28 +36,39 @@ public class AndroidInput : MonoBehaviour {
         }
         else
         {
-            
+            if (mouseStay && Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Pushed();
+            }
         }
 	}
-
+    
     void OnMouseEnter()
     {
+        mouseStay = true; 
+    }
 
+    void OnMouseExit()
+    {
+        mouseStay = false; 
     }
 
     void OnMouseStay()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Pushed(); 
-        }
+        
     }
     
     void Pushed()
     {
-        if (pushed != null)
+        if (!pushedMaterialActive)
         {
+            pushedMaterialActive = true; 
             GetComponent<Renderer>().material = pushed;
+        }
+        else
+        {
+            pushedMaterialActive = false; 
+            GetComponent<Renderer>().material = normal;
         }
     }
 }
