@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AndroidInput : MonoBehaviour {
 
+    public bool usesAndroid; 
+
     public float minTouchDistance;
     public Material pushed;
     public Material normal; 
@@ -16,16 +18,36 @@ public class AndroidInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Touch[] t = Input.touches; 
-        for (int i = 0; i < t.Length; i++)
+        if (usesAndroid)
         {
-            if (Vector2.Distance(t[i].position, transform.position) < minTouchDistance)
+            Touch[] t = Input.touches;
+            for (int i = 0; i < t.Length; i++)
             {
-                Pushed(); 
+                if (Vector2.Distance(t[i].position, transform.position) < minTouchDistance)
+                {
+                    Pushed();
+                }
             }
+        }
+        else
+        {
+            
         }
 	}
 
+    void OnMouseEnter()
+    {
+
+    }
+
+    void OnMouseStay()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Pushed(); 
+        }
+    }
+    
     void Pushed()
     {
         if (pushed != null)
